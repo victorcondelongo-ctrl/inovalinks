@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>InovAI — Automação & IA para Negócios</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --blue: #4B6BFF;
+    --purple: #8B3DFF;
+    --violet: #6B4EFF;
+    --bg: #0A0A12;
+    --surface: #12121E;
+    --surface2: #1A1A2E;
+    --border: rgba(107, 78, 255, 0.2);
+    --text: #F0EEFF;
+    --muted: rgba(240, 238, 255, 0.55);
+    --glow-blue: rgba(75, 107, 255, 0.15);
+    --glow-purple: rgba(139, 61, 255, 0.15);
+  }
+
+  html, body {
+    min-height: 100%;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  body {
+    display: flex;
+    justify-content: center;
+    padding: 48px 16px 80px;
+    background-image:
+      radial-gradient(ellipse 60% 40% at 20% -10%, rgba(75,107,255,0.18) 0%, transparent 70%),
+      radial-gradient(ellipse 50% 35% at 80% 5%, rgba(139,61,255,0.16) 0%, transparent 65%),
+      radial-gradient(ellipse 40% 30% at 50% 100%, rgba(107,78,255,0.10) 0%, transparent 70%);
+  }
+
+  .container {
+    width: 100%;
+    max-width: 420px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+  }
+
+  /* HEADER */
+  .header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin-bottom: 32px;
+  }
+
+  .logo-wrap {
+    width: 96px;
+    height: 96px;
+    border-radius: 50%;
+    background: var(--surface2);
+    border: 1.5px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 16px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .logo-wrap::after {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, rgba(75,107,255,0.5), rgba(139,61,255,0.5));
+    z-index: -1;
+  }
+
+  .logo-wrap img {
+    width: 72px;
+    height: auto;
+  }
+
+  .name {
+    font-family: 'Syne', sans-serif;
+    font-size: 28px;
+    font-weight: 800;
+    background: linear-gradient(90deg, #4B6BFF 0%, #8B3DFF 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: -0.5px;
+    margin-bottom: 6px;
+  }
+
+  .tagline {
+    font-size: 13px;
+    color: var(--muted);
+    font-weight: 400;
+    max-width: 260px;
+    line-height: 1.5;
+  }
+
+  /* SOCIAL ICONS */
+  .social-row {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 36px;
+  }
+
+  .social-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    transition: transform 0.2s, border-color 0.2s, background 0.2s;
+    cursor: pointer;
+  }
+
+  .social-icon:hover {
+    transform: translateY(-3px);
+    border-color: rgba(107,78,255,0.6);
+    background: rgba(107,78,255,0.12);
+  }
+
+  .social-icon svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  /* LINKS */
+  .links-section {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 36px;
+  }
+
+  .link-btn {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    width: 100%;
+    padding: 16px 20px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    text-decoration: none;
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: transform 0.2s, border-color 0.2s, background 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .link-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, var(--glow-blue), var(--glow-purple));
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+
+  .link-btn:hover {
+    transform: translateY(-2px);
+    border-color: rgba(107,78,255,0.5);
+  }
+
+  .link-btn:hover::before { opacity: 1; }
+
+  .link-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    position: relative;
+    z-index: 1;
+  }
+
+  .link-icon.whatsapp { background: rgba(37,211,102,0.15); }
+  .link-icon.youtube { background: rgba(255,0,0,0.15); }
+  .link-icon.instagram { background: rgba(225,48,108,0.15); }
+
+  .link-icon svg { width: 22px; height: 22px; }
+
+  .link-text {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    z-index: 1;
+  }
+
+  .link-label {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--text);
+  }
+
+  .link-sub {
+    font-size: 12px;
+    color: var(--muted);
+    font-weight: 400;
+  }
+
+  .link-arrow {
+    margin-left: auto;
+    color: var(--muted);
+    position: relative;
+    z-index: 1;
+    transition: transform 0.2s;
+  }
+
+  .link-btn:hover .link-arrow { transform: translateX(4px); }
+
+  /* VIDEO SECTION */
+  .video-section {
+    width: 100%;
+    margin-bottom: 36px;
+  }
+
+  .section-label {
+    font-family: 'Syne', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--muted);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    text-align: center;
+    margin-bottom: 14px;
+  }
+
+  .video-card {
+    width: 100%;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    overflow: hidden;
+  }
+
+  .video-title-bar {
+    padding: 14px 18px 10px;
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.4;
+  }
+
+  .video-wrapper {
+    position: relative;
+    width: 100%;
+    padding-bottom: 56.25%;
+    height: 0;
+    overflow: hidden;
+  }
+
+  .video-wrapper iframe {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    border: none;
+  }
+
+  /* FOOTER */
+  .footer {
+    font-size: 12px;
+    color: rgba(240,238,255,0.25);
+    text-align: center;
+    margin-top: 8px;
+  }
+
+  /* DIVIDER */
+  .divider {
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--border), transparent);
+    margin: 8px 0 24px;
+  }
+
+  /* Grain overlay */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 999;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    opacity: 0.4;
+  }
+
+  @media (max-width: 480px) {
+    body { padding: 36px 16px 60px; }
+    .name { font-size: 24px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="logo-wrap">
+      <!-- Logo inline SVG fallback caso a imagem não carregue -->
+      <svg width="60" height="60" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Bulb shape -->
+        <circle cx="100" cy="80" r="48" stroke="url(#g1)" stroke-width="8" fill="none"/>
+        <rect x="78" y="118" width="44" height="8" rx="4" fill="url(#g1)"/>
+        <rect x="82" y="130" width="36" height="8" rx="4" fill="url(#g1)"/>
+        <rect x="86" y="142" width="28" height="8" rx="4" fill="url(#g1)"/>
+        <text x="100" y="90" text-anchor="middle" font-family="Arial" font-weight="900" font-size="28" fill="url(#g1)">AI</text>
+        <defs>
+          <linearGradient id="g1" x1="52" y1="32" x2="148" y2="158" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#4B6BFF"/>
+            <stop offset="1" stop-color="#8B3DFF"/>
+          </linearGradient>
+        </defs>
+      </svg>
+    </div>
+    <div class="name">InovAI</div>
+    <div class="tagline">Automação & IA para negócios • Victor Conde Longo</div>
+  </div>
+
+  <!-- SOCIAL ICONS -->
+  <div class="social-row">
+    <!-- Instagram -->
+    <a href="https://www.instagram.com/inovai_ia/" target="_blank" class="social-icon" aria-label="Instagram">
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="2" y="2" width="20" height="20" rx="6" stroke="url(#ig)" stroke-width="2"/>
+        <circle cx="12" cy="12" r="4.5" stroke="url(#ig)" stroke-width="2"/>
+        <circle cx="17.5" cy="6.5" r="1" fill="url(#ig)"/>
+        <defs>
+          <linearGradient id="ig" x1="2" y1="2" x2="22" y2="22" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#F56040"/>
+            <stop offset="0.5" stop-color="#E1306C"/>
+            <stop offset="1" stop-color="#833AB4"/>
+          </linearGradient>
+        </defs>
+      </svg>
+    </a>
+    <!-- YouTube -->
+    <a href="https://www.youtube.com/@VictorConde-k1k" target="_blank" class="social-icon" aria-label="YouTube">
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="2" y="5" width="20" height="14" rx="4" stroke="#FF0000" stroke-width="2"/>
+        <polygon points="10,9 16,12 10,15" fill="#FF0000"/>
+      </svg>
+    </a>
+    <!-- WhatsApp -->
+    <a href="https://wa.me/5512981675671" target="_blank" class="social-icon" aria-label="WhatsApp">
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="12" cy="12" r="10" stroke="#25D366" stroke-width="2"/>
+        <path d="M16.5 13.5c-.3-.2-1.7-.9-2-1-.3-.1-.5-.1-.7.1-.2.2-.8.9-1 1.1-.2.2-.4.2-.7.1-.3-.2-1.3-.5-2.4-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.6.1-.1.3-.3.4-.5.1-.2.1-.3.2-.5.1-.2 0-.4-.1-.5-.1-.1-.7-1.7-.9-2.3-.2-.6-.4-.5-.6-.5H7c-.2 0-.5.1-.7.3C6.1 7.9 5.5 8.6 5.5 10c0 1.4 1 2.7 1.1 2.9.1.2 1.9 3 4.7 4.2.7.3 1.2.4 1.6.5.7.2 1.3.2 1.8.1.6-.1 1.7-.7 2-1.4.2-.7.2-1.3.1-1.4-.1-.1-.3-.2-.6-.4z" fill="#25D366"/>
+      </svg>
+    </a>
+  </div>
+
+  <!-- LINKS -->
+  <div class="links-section">
+
+    <a href="https://wa.me/5512981675671" target="_blank" class="link-btn">
+      <div class="link-icon whatsapp">
+        <svg viewBox="0 0 24 24" fill="none">
+          <circle cx="12" cy="12" r="10" stroke="#25D366" stroke-width="2"/>
+          <path d="M16.5 13.5c-.3-.2-1.7-.9-2-1-.3-.1-.5-.1-.7.1-.2.2-.8.9-1 1.1-.2.2-.4.2-.7.1-.3-.2-1.3-.5-2.4-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.6.1-.1.3-.3.4-.5.1-.2.1-.3.2-.5.1-.2 0-.4-.1-.5-.1-.1-.7-1.7-.9-2.3-.2-.6-.4-.5-.6-.5H7c-.2 0-.5.1-.7.3C6.1 7.9 5.5 8.6 5.5 10c0 1.4 1 2.7 1.1 2.9.1.2 1.9 3 4.7 4.2.7.3 1.2.4 1.6.5.7.2 1.3.2 1.8.1.6-.1 1.7-.7 2-1.4.2-.7.2-1.3.1-1.4-.1-.1-.3-.2-.6-.4z" fill="#25D366"/>
+        </svg>
+      </div>
+      <div class="link-text">
+        <span class="link-label">Fale comigo no WhatsApp</span>
+        <span class="link-sub">Automação, IA e muito mais</span>
+      </div>
+      <svg class="link-arrow" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+    </a>
+
+    <a href="https://www.youtube.com/@VictorConde-k1k" target="_blank" class="link-btn">
+      <div class="link-icon youtube">
+        <svg viewBox="0 0 24 24" fill="none">
+          <rect x="2" y="5" width="20" height="14" rx="4" stroke="#FF0000" stroke-width="2"/>
+          <polygon points="10,9 16,12 10,15" fill="#FF0000"/>
+        </svg>
+      </div>
+      <div class="link-text">
+        <span class="link-label">Canal no YouTube</span>
+        <span class="link-sub">Victor Conde — conteúdo sobre IA e automação</span>
+      </div>
+      <svg class="link-arrow" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+    </a>
+
+    <a href="https://www.instagram.com/inovai_ia/" target="_blank" class="link-btn">
+      <div class="link-icon instagram">
+        <svg viewBox="0 0 24 24" fill="none">
+          <rect x="2" y="2" width="20" height="20" rx="6" stroke="url(#ig2)" stroke-width="2"/>
+          <circle cx="12" cy="12" r="4.5" stroke="url(#ig2)" stroke-width="2"/>
+          <circle cx="17.5" cy="6.5" r="1" fill="url(#ig2)"/>
+          <defs>
+            <linearGradient id="ig2" x1="2" y1="2" x2="22" y2="22" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#F56040"/>
+              <stop offset="0.5" stop-color="#E1306C"/>
+              <stop offset="1" stop-color="#833AB4"/>
+            </linearGradient>
+          </defs>
+        </svg>
+      </div>
+      <div class="link-text">
+        <span class="link-label">Siga no Instagram</span>
+        <span class="link-sub">@inovai_ia</span>
+      </div>
+      <svg class="link-arrow" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+    </a>
+
+  </div>
+
+  <!-- VIDEO -->
+  <div class="video-section">
+    <div class="section-label">Assista agora</div>
+    <div class="video-card">
+      <div class="video-title-bar">Explicando o Prospect e o StrongZap</div>
+      <div class="video-wrapper">
+        <!-- 
+          SUBSTITUA "VIDEO_ID_AQUI" pelo ID do vídeo do YouTube.
+          Ex: se o link for https://www.youtube.com/watch?v=abc123xyz
+          coloque: src="https://www.youtube.com/embed/abc123xyz?rel=0&modestbranding=1"
+        -->
+        <iframe
+          src="https://www.youtube.com/embed/VIDEO_ID_AQUI?rel=0&modestbranding=1"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen
+          title="InovAI — Prospect e StrongZap">
+        </iframe>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">© 2025 InovAI · Victor Conde Longo</div>
+
+</div>
+</body>
+</html>
