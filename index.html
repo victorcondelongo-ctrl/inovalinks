@@ -1,4 +1,4 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
@@ -6,6 +6,7 @@
 <title>InovAI — Automação & IA para Negócios</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -51,7 +52,6 @@
     gap: 0;
   }
 
-  /* HEADER */
   .header {
     display: flex;
     flex-direction: column;
@@ -83,11 +83,6 @@
     z-index: -1;
   }
 
-  .logo-wrap img {
-    width: 72px;
-    height: auto;
-  }
-
   .name {
     font-family: 'Syne', sans-serif;
     font-size: 28px;
@@ -108,7 +103,7 @@
     line-height: 1.5;
   }
 
-  /* SOCIAL ICONS */
+  /* SOCIAL ICONS ROW */
   .social-row {
     display: flex;
     gap: 16px;
@@ -135,10 +130,7 @@
     background: rgba(107,78,255,0.12);
   }
 
-  .social-icon svg {
-    width: 20px;
-    height: 20px;
-  }
+  .social-icon svg { width: 20px; height: 20px; }
 
   /* LINKS */
   .links-section {
@@ -178,11 +170,7 @@
     transition: opacity 0.2s;
   }
 
-  .link-btn:hover {
-    transform: translateY(-2px);
-    border-color: rgba(107,78,255,0.5);
-  }
-
+  .link-btn:hover { transform: translateY(-2px); border-color: rgba(107,78,255,0.5); }
   .link-btn:hover::before { opacity: 1; }
 
   .link-icon {
@@ -197,9 +185,10 @@
     z-index: 1;
   }
 
-  .link-icon.whatsapp { background: rgba(37,211,102,0.15); }
-  .link-icon.youtube { background: rgba(255,0,0,0.15); }
+  .link-icon.whatsapp  { background: rgba(37,211,102,0.15); }
+  .link-icon.youtube   { background: rgba(255,0,0,0.15); }
   .link-icon.instagram { background: rgba(225,48,108,0.15); }
+  .link-icon.contact   { background: rgba(107,78,255,0.15); }
 
   .link-icon svg { width: 22px; height: 22px; }
 
@@ -210,17 +199,8 @@
     z-index: 1;
   }
 
-  .link-label {
-    font-size: 15px;
-    font-weight: 500;
-    color: var(--text);
-  }
-
-  .link-sub {
-    font-size: 12px;
-    color: var(--muted);
-    font-weight: 400;
-  }
+  .link-label { font-size: 15px; font-weight: 500; color: var(--text); }
+  .link-sub   { font-size: 12px; color: var(--muted); font-weight: 400; }
 
   .link-arrow {
     margin-left: auto;
@@ -229,13 +209,12 @@
     z-index: 1;
     transition: transform 0.2s;
   }
-
   .link-btn:hover .link-arrow { transform: translateX(4px); }
 
   /* VIDEO SECTION */
   .video-section {
     width: 100%;
-    margin-bottom: 36px;
+    margin-bottom: 20px;
   }
 
   .section-label {
@@ -281,6 +260,115 @@
     border: none;
   }
 
+  /* SHARE BAR */
+  .share-bar {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin: 20px 0 36px;
+  }
+
+  .share-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 18px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 50px;
+    color: var(--muted);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: transform 0.2s, border-color 0.2s, color 0.2s;
+    text-decoration: none;
+  }
+
+  .share-btn:hover {
+    transform: translateY(-2px);
+    border-color: rgba(107,78,255,0.5);
+    color: var(--text);
+  }
+
+  .share-btn svg { width: 16px; height: 16px; flex-shrink: 0; }
+
+  /* TOAST */
+  .toast {
+    position: fixed;
+    bottom: 32px;
+    left: 50%;
+    transform: translateX(-50%) translateY(80px);
+    background: #1A1A2E;
+    border: 1px solid rgba(107,78,255,0.4);
+    color: var(--text);
+    font-size: 13px;
+    padding: 10px 20px;
+    border-radius: 50px;
+    transition: transform 0.3s;
+    z-index: 1000;
+    white-space: nowrap;
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+
+  /* QR MODAL */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.75);
+    z-index: 500;
+    align-items: center;
+    justify-content: center;
+  }
+  .modal-overlay.open { display: flex; }
+
+  .modal-box {
+    background: #1A1A2E;
+    border: 1px solid rgba(107,78,255,0.35);
+    border-radius: 24px;
+    padding: 32px 28px 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    max-width: 280px;
+    width: 90%;
+  }
+
+  .modal-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text);
+    text-align: center;
+  }
+
+  .modal-sub {
+    font-size: 12px;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  #qrcode canvas, #qrcode img {
+    border-radius: 12px;
+  }
+
+  .modal-close {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    padding: 8px 24px;
+    border-radius: 50px;
+    cursor: pointer;
+    font-size: 13px;
+    font-family: 'DM Sans', sans-serif;
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .modal-close:hover { border-color: rgba(107,78,255,0.5); color: var(--text); }
+
   /* FOOTER */
   .footer {
     font-size: 12px;
@@ -289,15 +377,6 @@
     margin-top: 8px;
   }
 
-  /* DIVIDER */
-  .divider {
-    width: 100%;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, var(--border), transparent);
-    margin: 8px 0 24px;
-  }
-
-  /* Grain overlay */
   body::after {
     content: '';
     position: fixed;
@@ -315,14 +394,26 @@
 </style>
 </head>
 <body>
+
+<!-- QR CODE MODAL -->
+<div class="modal-overlay" id="qrModal">
+  <div class="modal-box">
+    <div class="modal-title">QR Code — InovAI Links</div>
+    <div id="qrcode"></div>
+    <div class="modal-sub">Aponte a câmera para abrir a página</div>
+    <button class="modal-close" onclick="closeQR()">Fechar</button>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast">Link copiado!</div>
+
 <div class="container">
 
   <!-- HEADER -->
   <div class="header">
     <div class="logo-wrap">
-      <!-- Logo inline SVG fallback caso a imagem não carregue -->
       <svg width="60" height="60" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <!-- Bulb shape -->
         <circle cx="100" cy="80" r="48" stroke="url(#g1)" stroke-width="8" fill="none"/>
         <rect x="78" y="118" width="44" height="8" rx="4" fill="url(#g1)"/>
         <rect x="82" y="130" width="36" height="8" rx="4" fill="url(#g1)"/>
@@ -340,11 +431,16 @@
     <div class="tagline">Automação & IA para negócios • Victor Conde Longo</div>
   </div>
 
-  <!-- SOCIAL ICONS -->
+  <!-- SOCIAL ICONS: WhatsApp, Instagram, YouTube, Contato -->
   <div class="social-row">
-    <!-- Instagram -->
+    <a href="https://wa.me/5512981675671" target="_blank" class="social-icon" aria-label="WhatsApp">
+      <svg viewBox="0 0 24 24" fill="none">
+        <circle cx="12" cy="12" r="10" stroke="#25D366" stroke-width="2"/>
+        <path d="M16.5 13.5c-.3-.2-1.7-.9-2-1-.3-.1-.5-.1-.7.1-.2.2-.8.9-1 1.1-.2.2-.4.2-.7.1-.3-.2-1.3-.5-2.4-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.6.1-.1.3-.3.4-.5.1-.2.1-.3.2-.5.1-.2 0-.4-.1-.5-.1-.1-.7-1.7-.9-2.3-.2-.6-.4-.5-.6-.5H7c-.2 0-.5.1-.7.3C6.1 7.9 5.5 8.6 5.5 10c0 1.4 1 2.7 1.1 2.9.1.2 1.9 3 4.7 4.2.7.3 1.2.4 1.6.5.7.2 1.3.2 1.8.1.6-.1 1.7-.7 2-1.4.2-.7.2-1.3.1-1.4-.1-.1-.3-.2-.6-.4z" fill="#25D366"/>
+      </svg>
+    </a>
     <a href="https://www.instagram.com/inovai_ia/" target="_blank" class="social-icon" aria-label="Instagram">
-      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <svg viewBox="0 0 24 24" fill="none">
         <rect x="2" y="2" width="20" height="20" rx="6" stroke="url(#ig)" stroke-width="2"/>
         <circle cx="12" cy="12" r="4.5" stroke="url(#ig)" stroke-width="2"/>
         <circle cx="17.5" cy="6.5" r="1" fill="url(#ig)"/>
@@ -357,23 +453,23 @@
         </defs>
       </svg>
     </a>
-    <!-- YouTube -->
     <a href="https://www.youtube.com/@VictorConde-k1k" target="_blank" class="social-icon" aria-label="YouTube">
-      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <svg viewBox="0 0 24 24" fill="none">
         <rect x="2" y="5" width="20" height="14" rx="4" stroke="#FF0000" stroke-width="2"/>
         <polygon points="10,9 16,12 10,15" fill="#FF0000"/>
       </svg>
     </a>
-    <!-- WhatsApp -->
-    <a href="https://wa.me/5512981675671" target="_blank" class="social-icon" aria-label="WhatsApp">
-      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="12" cy="12" r="10" stroke="#25D366" stroke-width="2"/>
-        <path d="M16.5 13.5c-.3-.2-1.7-.9-2-1-.3-.1-.5-.1-.7.1-.2.2-.8.9-1 1.1-.2.2-.4.2-.7.1-.3-.2-1.3-.5-2.4-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.6.1-.1.3-.3.4-.5.1-.2.1-.3.2-.5.1-.2 0-.4-.1-.5-.1-.1-.7-1.7-.9-2.3-.2-.6-.4-.5-.6-.5H7c-.2 0-.5.1-.7.3C6.1 7.9 5.5 8.6 5.5 10c0 1.4 1 2.7 1.1 2.9.1.2 1.9 3 4.7 4.2.7.3 1.2.4 1.6.5.7.2 1.3.2 1.8.1.6-.1 1.7-.7 2-1.4.2-.7.2-1.3.1-1.4-.1-.1-.3-.2-.6-.4z" fill="#25D366"/>
+    <a href="data:text/vcard;charset=utf-8,BEGIN:VCARD%0AVERSION:3.0%0AFN:Victor%20Conde%20-%20InovAI%0ATEL:+5512981675671%0AEND:VCARD" download="Victor-Conde-InovAI.vcf" class="social-icon" aria-label="Adicionar aos Contatos">
+      <svg viewBox="0 0 24 24" fill="none">
+        <rect x="2" y="4" width="20" height="16" rx="3" stroke="#6B4EFF" stroke-width="2"/>
+        <circle cx="9" cy="11" r="2.5" stroke="#6B4EFF" stroke-width="1.8"/>
+        <path d="M5 17c0-2 1.8-3 4-3s4 1 4 3" stroke="#6B4EFF" stroke-width="1.8" stroke-linecap="round"/>
+        <path d="M16 9v6M13 12h6" stroke="#6B4EFF" stroke-width="2" stroke-linecap="round"/>
       </svg>
     </a>
   </div>
 
-  <!-- LINKS -->
+  <!-- LINKS: WhatsApp, Instagram, YouTube, Adicionar aos Contatos -->
   <div class="links-section">
 
     <a href="https://wa.me/5512981675671" target="_blank" class="link-btn">
@@ -386,20 +482,6 @@
       <div class="link-text">
         <span class="link-label">Fale comigo no WhatsApp</span>
         <span class="link-sub">Automação, IA e muito mais</span>
-      </div>
-      <svg class="link-arrow" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
-    </a>
-
-    <a href="https://www.youtube.com/@VictorConde-k1k" target="_blank" class="link-btn">
-      <div class="link-icon youtube">
-        <svg viewBox="0 0 24 24" fill="none">
-          <rect x="2" y="5" width="20" height="14" rx="4" stroke="#FF0000" stroke-width="2"/>
-          <polygon points="10,9 16,12 10,15" fill="#FF0000"/>
-        </svg>
-      </div>
-      <div class="link-text">
-        <span class="link-label">Canal no YouTube</span>
-        <span class="link-sub">Victor Conde — conteúdo sobre IA e automação</span>
       </div>
       <svg class="link-arrow" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
     </a>
@@ -426,6 +508,36 @@
       <svg class="link-arrow" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
     </a>
 
+    <a href="https://www.youtube.com/@VictorConde-k1k" target="_blank" class="link-btn">
+      <div class="link-icon youtube">
+        <svg viewBox="0 0 24 24" fill="none">
+          <rect x="2" y="5" width="20" height="14" rx="4" stroke="#FF0000" stroke-width="2"/>
+          <polygon points="10,9 16,12 10,15" fill="#FF0000"/>
+        </svg>
+      </div>
+      <div class="link-text">
+        <span class="link-label">Canal no YouTube</span>
+        <span class="link-sub">Victor Conde — IA e automação</span>
+      </div>
+      <svg class="link-arrow" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+    </a>
+
+    <a href="data:text/vcard;charset=utf-8,BEGIN:VCARD%0AVERSION:3.0%0AFN:Victor%20Conde%20-%20InovAI%0ATEL:+5512981675671%0AEND:VCARD" download="Victor-Conde-InovAI.vcf" class="link-btn">
+      <div class="link-icon contact">
+        <svg viewBox="0 0 24 24" fill="none">
+          <rect x="2" y="4" width="20" height="16" rx="3" stroke="#6B4EFF" stroke-width="2"/>
+          <circle cx="9" cy="11" r="2.5" stroke="#6B4EFF" stroke-width="1.8"/>
+          <path d="M5 17c0-2 1.8-3 4-3s4 1 4 3" stroke="#6B4EFF" stroke-width="1.8" stroke-linecap="round"/>
+          <path d="M16 9v6M13 12h6" stroke="#6B4EFF" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="link-text">
+        <span class="link-label">Adicionar aos Contatos</span>
+        <span class="link-sub">Victor Conde — InovAI</span>
+      </div>
+      <svg class="link-arrow" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+    </a>
+
   </div>
 
   <!-- VIDEO -->
@@ -434,11 +546,6 @@
     <div class="video-card">
       <div class="video-title-bar">Explicando o Prospect e o StrongZap</div>
       <div class="video-wrapper">
-        <!-- 
-          SUBSTITUA "VIDEO_ID_AQUI" pelo ID do vídeo do YouTube.
-          Ex: se o link for https://www.youtube.com/watch?v=abc123xyz
-          coloque: src="https://www.youtube.com/embed/abc123xyz?rel=0&modestbranding=1"
-        -->
         <iframe
           src="https://www.youtube.com/embed/IfSpfBrW2-U?rel=0&modestbranding=1"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -449,8 +556,67 @@
     </div>
   </div>
 
+  <!-- SHARE BAR -->
+  <div class="share-bar">
+    <button class="share-btn" onclick="copyLink()" aria-label="Copiar link">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/>
+        <path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/>
+      </svg>
+      Copiar link
+    </button>
+    <button class="share-btn" onclick="openQR()" aria-label="QR Code">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <rect x="3" y="3" width="7" height="7" rx="1"/>
+        <rect x="14" y="3" width="7" height="7" rx="1"/>
+        <rect x="3" y="14" width="7" height="7" rx="1"/>
+        <rect x="14" y="14" width="3" height="3"/>
+        <rect x="18" y="18" width="3" height="3"/>
+        <rect x="14" y="18" width="3" height="3" style="display:none"/>
+        <path d="M17 14h1v1h-1zM19 16h2v2h-2zM17 18h1v1h-1zM14 17h1v1h-1z" fill="currentColor" stroke="none"/>
+      </svg>
+      QR Code
+    </button>
+  </div>
+
   <div class="footer">© 2025 InovAI · Victor Conde Longo</div>
 
 </div>
+
+<script>
+  var PAGE_URL = 'https://inova-links.vercel.app/';
+  var qrGenerated = false;
+
+  function copyLink() {
+    navigator.clipboard.writeText(PAGE_URL).then(function() {
+      var t = document.getElementById('toast');
+      t.classList.add('show');
+      setTimeout(function(){ t.classList.remove('show'); }, 2500);
+    });
+  }
+
+  function openQR() {
+    document.getElementById('qrModal').classList.add('open');
+    if (!qrGenerated) {
+      new QRCode(document.getElementById('qrcode'), {
+        text: PAGE_URL,
+        width: 200,
+        height: 200,
+        colorDark: '#4B6BFF',
+        colorLight: '#0A0A12',
+        correctLevel: QRCode.CorrectLevel.H
+      });
+      qrGenerated = true;
+    }
+  }
+
+  function closeQR() {
+    document.getElementById('qrModal').classList.remove('open');
+  }
+
+  document.getElementById('qrModal').addEventListener('click', function(e) {
+    if (e.target === this) closeQR();
+  });
+</script>
 </body>
 </html>
